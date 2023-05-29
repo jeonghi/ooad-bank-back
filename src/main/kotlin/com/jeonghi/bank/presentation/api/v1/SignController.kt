@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping
 class SignController(private val signService: SignService) {
-    @PostMapping("/sign-up")
+    @PostMapping("/api/v1/sign-up")
     fun signUp(@RequestBody request: SignUpRequest) = ApiResponse.success(signService.registMember(request))
 
-    @PostMapping("/sign-in")
+    @PostMapping("/api/v1/sign-in")
     fun signIn(@RequestBody request: SignInRequest) = ApiResponse.success(signService.signIn(request))
 }

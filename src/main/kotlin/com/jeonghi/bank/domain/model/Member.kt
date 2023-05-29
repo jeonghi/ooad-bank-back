@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.*
 
 @Tag(name = "로그인 후 사용할 수 있는 API")
-@Entity
+@Entity(name = "member")
 class Member(
 
     @Id
@@ -30,9 +30,19 @@ class Member(
     @Enumerated(EnumType.STRING)
     val type: MemberType = MemberType.USER,
 
+    @OneToMany(
+        mappedBy = "owner",
+        fetch = FetchType.LAZY,
+        cascade = [CascadeType.ALL],
+    )
+    val bankAccounts: Set<BankAccount> = emptySet(),
+
 ) : BaseTimeEntity() {
     companion object {
-        fun from(request: SignUpRequest, encoder: PasswordEncoder) = Member(	// 파라미터에 PasswordEncoder 추가
+        fun from(
+            request: SignUpRequest,
+            encoder: PasswordEncoder,
+        ) = Member(	// 파라미터에 PasswordEncoder 추가
             account = request.account,
             password = encoder.encode(request.password),	// 수정
             name = request.name,
@@ -40,7 +50,10 @@ class Member(
         )
     }
 
-    fun update(newMember: MemberUpdateRequest, encoder: PasswordEncoder) {	// 파라미터에 PasswordEncoder 추가
+    fun update(
+        newMember: MemberUpdateRequest,
+        encoder: PasswordEncoder,
+    ) {	// 파라미터에 PasswordEncoder 추가
         this.password = newMember.newPassword
             ?.takeIf { it.isNotBlank() }
             ?.let { encoder.encode(it) }	// 추가

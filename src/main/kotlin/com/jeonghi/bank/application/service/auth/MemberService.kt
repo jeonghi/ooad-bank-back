@@ -14,7 +14,7 @@ import java.util.*
 @Service
 class MemberService(
     private val memberRepository: MemberRepository,
-    private val encoder: PasswordEncoder,   // 추가
+    private val encoder: PasswordEncoder, // 추가
 ) {
 
     @Transactional(readOnly = true)
