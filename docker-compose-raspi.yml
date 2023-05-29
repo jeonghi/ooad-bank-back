@@ -1,0 +1,14 @@
+version: '3.7'
+services:
+  db:
+    container_name: db
+    image: mysql:8.0
+    platform: linux/arm64/v8
+    restart: always
+    environment:
+      - MYSQL_USER=bank
+      - MYSQL_PASSWORD=bank
+      - MYSQL_ROOT_PASSWORD=bank
+      - MYSQL_DATABASE=bank
+    ports:
+      - "3306:3306"
